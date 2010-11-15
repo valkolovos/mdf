@@ -1,7 +1,5 @@
 package org.mdf.mockdata;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -25,7 +23,6 @@ public class MockDataSource extends com.mockrunner.mock.jdbc.MockDataSource
     
     public MockDataSource(MockDataManager mockDataManager) {
         _mockDataManager = mockDataManager;
-        buildCustomFunctionMap();
     }
 
     public Connection getConnection() throws SQLException {
@@ -67,32 +64,6 @@ public class MockDataSource extends com.mockrunner.mock.jdbc.MockDataSource
         if (_jndiName != null) {
             Context ctx = new InitialContext();
             ctx.bind(_jndiName, this);
-        }
-    }
-
-    private void buildCustomFunctionMap() {
-        String customFunctionFile = "/mockPreparedStatement.customFunctions";
-        if (System.getProperty("customFunctionFile") != null) {
-            customFunctionFile = System.getProperty("customFunctionFile");
-        }
-        InputStream is = MockPreparedStatement.class.getResourceAsStream(customFunctionFile);
-        byte[] buffer = new byte[4096];
-        int c;
-        StringBuilder sb = new StringBuilder();
-        try {
-            while ((c = is.read(buffer)) != -1) {
-                sb.append(new String(buffer, 0, c));
-            }
-            is.close();
-            String[] lines = sb.toString().split("\n");
-            for (String line : lines) {
-                if (line.startsWith("#")) {
-                    continue;
-                }
-                String[] keyValue = line.split(",");
-                _customFunctionMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
-            }
-        } catch (IOException e) {
         }
     }
 

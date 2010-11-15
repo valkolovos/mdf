@@ -32,6 +32,7 @@ configurations {
 
 dependencies {
     //compile 'apache.ahc:ahc:2.0-orbitz-20100217'
+    compile 'org.acegisecurity:acegi-security:1.0.1'
     compile 'org.springframework:spring:2.5.6'
     compile 'apache.commons:commons-httpclient:3.0.1'
     compile 'org.aspectj:aspectjweaver:1.6.9'
@@ -45,6 +46,7 @@ dependencies {
     compile 'com.google.protobuf:protobuf-java:2.0.3'
     compile 'org.testng:testng:5.14.2'
     compile 'joda-time:joda-time:1.6.2'
+    compile 'xerces:xercesImpl:2.9.1'
     compile 'mockrunner:mockrunner-jdbc'
     testCompile 'org.easymock:easymock:2.5.2'
     testCompile 'org.easymock:easymockclassextension:2.5.2'
@@ -63,6 +65,9 @@ dependencies {
 task castor(type: JavaExec, dependsOn: [ 'cleanCastor' ]) {
     @org.gradle.api.tasks.OutputDirectory
     outputDir = file('build/generated-sources/')
+    onlyIf {
+        !outputDir.exists()
+    }
     main = 'org.exolab.castor.builder.SourceGeneratorMain'
     args '-i', 'src/main/resources/MockTestData.xsd', '-dest', outputDir.path, '-package', 'org.mdf.mockdata.generated', '-types', 'j2'
     classpath = configurations['castor'].fileCollection { return true }

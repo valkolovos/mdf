@@ -41,7 +41,7 @@ public class MockDataLoader {
     private Map<String, String> globalVariableMap = new HashMap<String, String>();
 
     public MockData loadMockData(String dataFile) throws Exception {
-        return loadMockData(dataFile, "com.orbitz.servicetests.mockdata.RuntimeMapping.xml", true);
+        return loadMockData(dataFile, "org.mdf.mockdata.RuntimeMapping.xml", true);
     }
 
     /**

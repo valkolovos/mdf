@@ -1,7 +1,5 @@
 package org.mdf.mockdata;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -24,7 +22,7 @@ public class MockDriver extends com.mockrunner.mock.jdbc.MockDriver {
         _instance = new MockDriver();
         try {
             DriverManager.registerDriver(_instance);
-            _instance._mockDataManager = new MockDataManager("com/orbitz/servicetests/mockdata/EmptyData.xml");
+            _instance._mockDataManager = new MockDataManager();
             _instance._mockDataManager.setCategoryMatcher(new SqlSnippetMatcher());
         } catch (SQLException e) {
         } catch (Exception e) {
@@ -33,7 +31,6 @@ public class MockDriver extends com.mockrunner.mock.jdbc.MockDriver {
     }
     
     private MockDriver() {
-        buildCustomFunctionMap();
     }
 
     public Connection connect(final String url, final Properties info) throws SQLException {
@@ -83,30 +80,4 @@ public class MockDriver extends com.mockrunner.mock.jdbc.MockDriver {
         }
     }
     
-    private void buildCustomFunctionMap() {
-        String customFunctionFile = "/mockPreparedStatement.customFunctions";
-        if (System.getProperty("customFunctionFile") != null) {
-            customFunctionFile = System.getProperty("customFunctionFile");
-        }
-        InputStream is = MockPreparedStatement.class.getResourceAsStream(customFunctionFile);
-        byte[] buffer = new byte[4096];
-        int c;
-        StringBuilder sb = new StringBuilder();
-        try {
-            while ((c = is.read(buffer)) != -1) {
-                sb.append(new String(buffer, 0, c));
-            }
-            is.close();
-            String[] lines = sb.toString().split("\n");
-            for (String line : lines) {
-                if (line.startsWith("#")) {
-                    continue;
-                }
-                String[] keyValue = line.split(",");
-                _customFunctionMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
-            }
-        } catch (IOException e) {
-        }
-    }
-
 }
