@@ -1,0 +1,104 @@
+apply plugin: 'eclipse'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = "protobuf"
+            addArtifactPattern "http://gradle-plugin-protobuf.googlecode.com/svn/trunk/repo/ws/antonov/gradle/plugins/protobuf/[module]/[revision]/[module]-[revision].[ext]"
+        }
+    }
+    dependencies {
+        classpath 'gradle:gradle-plugin-protobuf:0.3'
+    }
+}
+
+repositories {
+    mavenCentral()
+    flatDir name: 'mdfRepository', dirs: 'lib'
+    mdfRepository {
+        addArtifactPattern(file('lib').absolutePath + '/[organisation]/[artifact](.[ext])')
+    }
+}
+
+tasks['javadoc'].exclude '**/com/google/**/*', '**/generated/**/*'
+
+configurations {
+    castor
+    hibernateTests
+}
+
+dependencies {
+    //compile 'apache.ahc:ahc:2.0-orbitz-20100217'
+    compile 'org.springframework:spring:2.5.6'
+    compile 'apache.commons:commons-httpclient:3.0.1'
+    compile 'org.aspectj:aspectjweaver:1.6.9'
+    compile 'com.thoughtworks.xstream:xstream:1.3.1'
+    compile 'org.codehaus.castor:castor:1.2'
+    compile 'org.mockejb:mockejb:0.6-beta2'
+    compile 'org.apache.tomcat:servlet-api:6.0.29'
+    compile 'commons-lang:commons-lang:2.5'
+    compile 'commons-pool:commons-pool:1.5.5'
+    compile 'commons-collections:commons-collections:3.2.1'
+    compile 'com.google.protobuf:protobuf-java:2.0.3'
+    compile 'org.testng:testng:5.14.2'
+    compile 'joda-time:joda-time:1.6.2'
+    compile 'mockrunner:mockrunner-jdbc'
+    testCompile 'org.easymock:easymock:2.5.2'
+    testCompile 'org.easymock:easymockclassextension:2.5.2'
+    testCompile 'cglib:cglib-nodep:2.2'
+    castor 'org.codehaus.castor:castor-codegen:1.2'
+    castor 'org.codehaus.castor:castor-xml-schema:1.2'
+    castor 'org.apache.velocity:velocity:1.5'
+    groovy 'org.codehaus.groovy:groovy:1.7.3'
+    hibernateTests 'org.codehaus.castor:castor:1.2'
+    hibernateTests 'mockrunner:mockrunner-jdbc'
+    hibernateTests 'org.testng:testng:5.14.2'
+    hibernateTests 'org.hibernate:hibernate:3.2.6.ga'
+    hibernateTests 'javax.transaction:jta:1.1'
+}
+
+task castor(type: JavaExec, dependsOn: [ 'cleanCastor' ]) {
+    @org.gradle.api.tasks.OutputDirectory
+    outputDir = file('build/generated-sources/')
+    main = 'org.exolab.castor.builder.SourceGeneratorMain'
+    args '-i', 'src/main/resources/MockTestData.xsd', '-dest', outputDir.path, '-package', 'org.mdf.mockdata.generated', '-types', 'j2'
+    classpath = configurations['castor'].fileCollection { return true }
+    project.sourceSets.main.java.srcDir 'build/generated-sources'
+}
+
+sourceSets {
+    hibernateTests {
+        compileClasspath = configurations.hibernateTests + sourceSets.main.classes + sourceSets.test.classes
+        runtimeClasspath = classes + compileClasspath
+    }
+}
+
+tasks['compileJava'].dependsOn 'castor'
+
+project.tasks['test'].configure {
+    includes = [ '**/*Test.class' ]
+    dependsOn 'hibernateTests'
+    useTestNG()
+}
+
+project.tasks['jar'].exclude 'com/google/**/*'
+
+tasks['eclipseClasspath'].plusConfigurations << configurations['hibernateTests']
+tasks['compileHibernateTestsJava'].dependsOn 'testClasses'
+
+task hibernateTests(type: Test, dependsOn: 'hibernateTestsClasses') {
+    includes = [ '**/*HibernateTest.class' ]
+    testClassesDir = sourceSets.hibernateTests.classesDir
+    testResultsDir = file("${buildDir}/hibernate-test-results")
+    testReportDir = file("${buildDir}/reports/hibernate-tests")
+    classpath = sourceSets.hibernateTests.runtimeClasspath
+    useTestNG()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '0.9-rc-1'
+}
+
