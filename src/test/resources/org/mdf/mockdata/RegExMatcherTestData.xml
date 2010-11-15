@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <parameterMatcher class="org.mdf.mockdata.RegExMatcher">
+        <param name="defaultParameterName" value="path"/>
+    </parameterMatcher>
+    <category>
+        <test>
+            <request>
+                <param name="path" value="\/doSomething/\w*\/necessaryArgument\/\w*\/anotherNecessaryArgument"/>
+            </request>
+            <response>
+                <param name="works" value="yes"/>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="path" value="\/market\/resolution\/\w+/1/HOT/\w+"/>
+            </request>
+            <response>
+                <param name="works" value="yes"/>
+            </response>
+        </test>
+    </category>
+</mock-data>

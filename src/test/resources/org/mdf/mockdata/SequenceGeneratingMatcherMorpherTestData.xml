@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+  <parameterMatcher id="sequenceMatcherMorpher" class="org.mdf.mockdata.SequenceGeneratingMatcherMorpher">
+    <param name="SEQUENCE_NAME.nextval" value="SEQUENCE_NAME"/>
+    <param name="SEQUENCE_2.nextval" value="SEQUENCE_2">
+    	<param name="init" value="4"/>
+    </param>
+  </parameterMatcher>
+  <parameterMorpher ref="sequenceMatcherMorpher"/>
+  <category>
+    <test>
+      <request>
+        <param name="foo" value="bar"/>
+      </request>
+      <response>
+        <param name="SEQUENCE_NAME.nextval"/>
+      </response>
+    </test>
+    <test>
+      <request>
+        <param name="1" value="SEQUENCE_NAME"/>
+      </request>
+      <response>
+        <param name="response" value="response value"/>
+      </response>
+    </test>
+    <test>
+    	<request>
+    		<param name="house" value="corn"/>
+    	</request>
+    	<response>
+    		<param name="SEQUENCE_2.nextval"/>
+    	</response>
+    </test>
+  </category>
+</mock-data>

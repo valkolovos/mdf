@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <description>
+    This is a test configuration file for the MockDataManager class.
+  </description>
+    <variable name="global_var1" value="var1" />
+    <variable name="overrideable_var" value="overrideable" />
+    <template name="template">
+        <param name="overrideable variable" value="@overrideable_var" />
+    </template>
+    <category>
+        <description>Basic variable replacement</description>
+        <variable name="category_var1" value="cat_var1" />
+        <test>
+            <request>
+                <param name="@global_var1" value="value" />
+            </request>
+            <response>
+                <param name="response" value="@category_var1" />
+            </response>
+        </test>
+        <test>
+            <description>Nested param variable replacement test</description>
+            <request>
+                <param name="parent">
+                    <param name="child-param" value="@global_var1" />
+                </param>
+            </request>
+            <response>
+                <param name="parent">
+                    <param name="@category_var1" value="child-param" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category>
+        <variable name="overrideable_var" value="cat2_var" />
+        <test>
+            <description>Test overriding global variables</description>
+            <request>
+                <param name="@overrideable_var" value="name is overridden" />
+            </request>
+            <response />
+        </test>
+        <test>
+            <description>Test that override applies in nested params</description>
+            <request />
+            <response>
+                <param name="parent">
+                    <param name="child-param" value="@overrideable_var" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category>
+        <test>
+            <request>
+                <use-template name="template" />
+            </request>
+            <response />
+        </test>
+    </category>
+    <category>
+        <variable name="overrideable_var" value="templated_var" />
+        <variable name="category_var" value="cat_var" />
+        <test>
+            <request>
+                <use-template name="template" />
+            </request>
+            <response />
+        </test>
+        <test>
+            <description>Test template params with variable names</description>
+            <request>
+                <use-template name="template">
+                    <param name="overrideable variable" value="@category_var" />
+                </use-template>
+            </request>
+            <response>
+                <use-template name="template">
+                    <param name="parent">
+                        <param name="child-param" value="@overrideable_var" />
+                    </param>
+                </use-template>
+            </response>
+        </test>
+    </category>
+    <category>
+        <variable name="VarName" value="REPLACED"/>
+        <test>
+            <request>
+                <param name="@VarName@.Extra" value="Foo"/>
+                <param name="Foo" value="Prefixed.@VarName@.Value"/>
+                <param name="No Variable, No Value"/>
+                <param name="PrefixedOnly.@VarName@"/>
+            </request>
+            <response/>
+        </test>
+    </category>
+    <category>
+        <test>
+            <request>
+                <param name="email" value="test@orbitz.com"/>
+                <param name="value_with@symbol" value="exists"/>
+            </request>
+            <response/>
+        </test>
+    </category>
+</mock-data>

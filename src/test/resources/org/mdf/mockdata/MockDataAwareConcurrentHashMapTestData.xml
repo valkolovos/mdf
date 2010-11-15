@@ -1,0 +1,31 @@
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+          http://www.orbitz.com/schema/mock-data
+          ../../../../../main/MockTestData.xsd ">
+	<parameterMorpher class="org.mdf.xml.XmlParameterMatcherMorpher" />
+	<template name="execute-service-template">
+		<param name="serviceInterface" value="com.orbitz.servicetests.ojf.TestService" />
+		<param name="methodName" value="executeService" />
+		<param name="arg1" value="This is my request." />
+		<param name="arg2" value="It has two values." />
+	</template>
+	<category name="cat">
+		<test>
+			<request>
+				<param name="key">
+				<param name="long" value="1" />
+				<param name="long" value="2" />
+				<param name="Implementation Type" value="java.lang.Long-array" />
+				</param>
+			</request>
+			<response>
+			<param name="value">
+				<param name="long" value="1" />
+				<param name="long" value="2" />
+				<param name="long" value="3" />
+				<param name="Implementation Type" value="java.lang.Long-array" />
+				</param>
+			</response>
+		</test>
+	</category>
+</mock-data>

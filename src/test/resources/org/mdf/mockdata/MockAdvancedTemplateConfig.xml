@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <description>
+    This is a test configuration file for the MockDataManager class.
+  </description>
+    <category>
+        <template name="search_template">
+            <param name="id" value="1" />
+
+            <param name="code" value="TC" />
+            <param name="name" value="Orbitz Hotel" />
+            <param name="latitude" value="41.8819" />
+
+            <param name="longitude" value="-87.6397" />
+            <param name="postalcode" value="60061" />
+            <param name="city" value="Chicago" />
+            <param name="address1" value="500 W Madison ST" />
+            <param name="address2" value="" />
+            <param name="state" value="IL" />
+            <param name="country" value="US" />
+            <param name="pos" value="ORB" />
+        </template>
+        <template name="nested_params">
+            <param name="level1">
+                <param name="first" value="1" />
+                <param name="first.second" value="2">
+                    <param name="third" value="3" />
+                </param>
+                <param name="first.second">
+                    <param name="fourth" value="4" />
+                </param>
+            </param>
+        </template>
+
+        <template name="generic_template">
+            <param name="exist" value="" />
+        </template>
+
+        <template name="2_deep_inherited_template">
+            <param name="existing" value="old_one" />
+            <param name="existing" value="old_two" />
+        </template>
+
+        <template name="inherited_template">
+            <use-template name="2_deep_inherited_template">
+                <param name="existing[1]" value="replaced" />
+                <param name="new" value="new" />
+            </use-template>
+            <use-template name="2_deep_inherited_template" />
+
+            <param name="inherited_param"></param>
+        </template>
+
+        <template name="top_template">
+            <use-template name="inherited_template" />
+            <param name="top_param" />
+        </template>
+
+        <template name="common-template">
+            <param name="common-a">
+                <param name="a" value="1"/>
+            </param>
+            <param name="common-b" value="2"/>
+        </template>
+        <template name="parent-template">
+            <param name="object">
+                <param name="field" value="this is a field"/>
+                <param name="common_field">
+                    <use-template name="common-template"/>
+                </param>
+            </param>
+        </template>
+        <template name="child-a">
+            <use-template name="parent-template">
+                <param name="object.field" value="this is another field"/>
+                <param name="object.common_field">
+                    <use-template name="common-template">
+                        <param name="common-a.a" value="2"/>
+                    </use-template>
+                </param>
+            </use-template>
+        </template>
+        <template name="child-b">
+            <use-template name="parent-template">
+                <param name="object.common_field">
+                    <use-template name="common-template">
+                        <param name="common-a.a" value="3"/>
+                    </use-template>
+                </param>
+            </use-template>
+        </template>
+
+        <test>
+            <request>
+                <param name="param1" value="value" />
+            </request>
+            <response>
+                <param name="response">
+                    <use-template name="search_template">
+                        <param name="name" value="E-Bookers Hotel">
+                            <param name="level2">
+                                <param name="level3">
+                                    <use-template name="generic_template">
+                                        <param name="foo" />
+                                    </use-template>
+                                </param>
+                            </param>
+                        </param>
+                    </use-template>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param2" value="value" />
+            </request>
+            <response>
+                <use-template name="nested_params">
+                    <param name="level1.first" value="level1.first replaced" />
+                    <param name="level1.first.second" value="level1.first.second replaced" />
+                    <param name="level1.first.second.third" value="third replaced" />
+                </use-template>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param3" value="value" />
+            </request>
+            <response>
+                <use-template name="nested_params">
+                    <param name="level1.first" value="level1.first replaced" />
+                    <param name="level1.first.second" value="level1.first.second replaced" />
+                    <param name="level1.first.second[2].fourth" value="fourth replaced" />
+                </use-template>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param4" value="value" />
+            </request>
+            <response>
+                <use-template name="generic_template" />
+                <param name="fourth" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param5" value="value"/>
+            </request>
+            <response>
+                <param name="list">
+                    <use-template name="parent-template"/>
+                    <use-template name="child-a"/>
+                    <use-template name="child-b"/>
+                    <use-template name="parent-template">
+                        <param name="object.common_field">
+                            <use-template name="common-template">
+                                <param name="common-b" value="foo"/>
+                            </use-template>
+                        </param>
+                    </use-template>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request />
+            <response>
+                <use-template name="top_template" />
+                <param name="old_param" />
+            </response>
+        </test>
+    </category>
+</mock-data>

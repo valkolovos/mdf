@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                           "http://castor.org/mapping.dtd">
+
+<mapping>
+  <class name="org.mdf.mockdata.generated.MockData" auto-complete="true">
+    <field name="_description" type="string" transient="true"/>
+  </class>
+  <class name="org.mdf.mockdata.generated.Category" auto-complete="true">
+    <field name="_description" type="string" transient="true"/>
+  </class>
+  <class name="org.mdf.mockdata.generated.Template" auto-complete="true">
+    <field name="_description" type="string" transient="true"/>
+  </class>
+  <class name="org.mdf.mockdata.generated.Test" auto-complete="true">
+    <field name="_description" type="string" transient="true"/>
+  </class>
+</mapping>

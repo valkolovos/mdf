@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <description>
+    This is a test configuration file for the MockDataManager class.
+  </description>
+    <parameterMorpher class="org.mdf.mockdata.GenerateMultiplesMorpher">
+        <param name="defaultParameterName" value="morphable_1"/>
+    </parameterMorpher>
+    <parameterMorpher class="org.mdf.mockdata.IncrementingMorpher">
+        <param name="paramName" value="plusDays"/>
+        <param name="useValueAsParamName" value="false"/>
+    </parameterMorpher>
+    <parameterMorpher class="org.mdf.mockdata.VariableParamToDateMorpher">
+        <param name="defaultParameterName" value="date_param"/>
+    </parameterMorpher>
+    <category>
+        <description>
+      This is description for the category. At runtime, we should ignore this because it's a waste of memory.
+      However, it's quite useful to have around for documentation.
+    </description>
+        <template name="response-template">
+            <description>
+        This is a sample template
+      </description>
+            <param name="response_param1" value="default response param1 value" />
+            <param name="complex_param">
+                <param name="childparam1" value="childparam1 value" />
+            </param>
+            <param name="complex_param">
+                <param name="childparam1" value="childparam1 value" />
+            </param>
+        </template>
+        <template name="child-param-template">
+            <description>This is a child param template</description>
+            <param name="param 1" value="param 1 value" />
+            <param name="param 2" value="param 2 value" />
+        </template>
+        <template name="ComplexClass2-template">
+            <param name="_stringField" value="ComplexClass2 String" />
+        </template>
+        <template name="ComplexClass-template">
+            <param name="stringField" value="ComplexClass String" />
+            <param name="mapField">
+                <param name="mapEntry" />
+            </param>
+            <param name="longArray" value="null" />
+            <param name="child" />
+            <param name="booleanList">
+                <param name="iterableEntry" value="false" />
+                <param name="iterableEntry" value="true" />
+            </param>
+            <param name="sameChild" />
+            <param name="nullObject" value="null" />
+            <param name="_c2">
+                <use-template name="ComplexClass2-template">
+                    <param name="_stringField" value="_c2 String value" />
+                </use-template>
+            </param>
+        </template>
+        <test>
+            <request>
+                <param name="param1" value="value" />
+            </request>
+            <response>
+                <param name="response_param1" value="response param1 value" />
+                <param name="complex_param">
+                    <param name="childparam1" value="childparam1 value" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param2" value="value" />
+            </request>
+            <response>
+                <use-template name="response-template">
+                    <param name="complex_param[1].childparam1" value="templated param" />
+                    <param name="complex_param[2]">
+                        <param name="childparam1" value="overridden child value" />
+                    </param>
+                    <param name="new_param">
+                        <param name="childparam" value="new param - child param" />
+                    </param>
+                    <param name="templated-param">
+                        <use-template name="child-param-template" />
+                    </param>
+                </use-template>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param3" value="value" />
+            </request>
+            <response>
+                <param name="templated-param">
+                    <use-template name="child-param-template">
+                        <param name="param 1" value="replaced param value 1" />
+                    </use-template>
+                </param>
+                <param name="templated-param">
+                    <use-template name="child-param-template">
+                        <param name="param 2" value="replaced param value 2" />
+                    </use-template>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param4" value="value" />
+            </request>
+            <response>
+                <param name="templated-param">
+                    <param name="child-param" value="this is a child param" />
+                    <param name="child-param-with-children">
+                        <use-template name="child-param-template" />
+                    </param>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param5" value="value" />
+            </request>
+            <response>
+                <param name="response">
+                    <use-template name="ComplexClass-template">
+                        <param name="booleanList">
+                            <param name="iterableEntry" value="false" />
+                            <param name="iterableEntry" value="false" />
+                            <param name="iterableEntry" value="false" />
+                        </param>
+                        <param name="child">
+                            <use-template name="ComplexClass-template">
+                                <param name="id" value="1" />
+                            </use-template>
+                        </param>
+                        <param name="sameChild">
+                            <param name="reference" value="1" />
+                        </param>
+                    </use-template>
+                </param>
+            </response>
+        </test>
+        <test>
+            <description>Test Response Delay</description>
+            <request>
+                <param name="delay_test" value="true" />
+            </request>
+            <response delay="5000">
+                <param name="delay_response" value="5000" />
+            </response>
+        </test>
+    </category>
+    <category>
+        <test>
+            <description>Test nested parameter morphers</description>
+            <request>
+                <param name="nested_morphers" value="true" />
+            </request>
+            <response>
+                <param name="morphable_1" value="2">
+                    <param name="date_param">
+                        <param name="plusDays"/>
+                        <param name="format" value="yyyy-MM-dd" />
+                    </param>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

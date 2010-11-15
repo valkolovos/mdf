@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.orbitz.com/schema/mock-data http://st.duncllc.com/service-testing/mock-data-framework/MockTestData-3.0.xsd ">
+    <parameterMatcher class="org.mdf.mockdata.RequestParameterMatcherMorpher" id="requestParamMM">
+        <param name="null value" value="set null value"/>
+    </parameterMatcher>
+    <parameterMorpher id="requestParamMM" ref="requestParamMM"/>
+    <category>
+        <test>
+            <request>
+                <param name="test null value" value="true"/>
+            </request>
+            <response>
+                <param name="should be null param" value="requestParam: 1"/>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="test nested param" value="true"/>
+            </request>
+            <response>
+                <param name="param1">
+                    <param name="childParam" value="requestParam: requestParam1.childParam"/>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request/>
+            <response>
+                <param name="param1" value="requestParam: 1"/>
+                <param name="param2" value="not morphed"/>
+            </response>
+        </test>
+    </category>
+</mock-data>

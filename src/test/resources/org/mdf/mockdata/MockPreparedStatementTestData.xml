@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <categoryMatcher class="org.mdf.mockdata.SqlSnippetMatcher"/>
+    <parameterMorpher class="org.mdf.mockdata.VariableParamToDateMorpher">
+        <param name="defaultParameterName" value="tmstamp"/>
+    </parameterMorpher>
+    <category name="testBasicStatement">
+        <param name="sqlSnippet" value="SELECT col1, col2, col3 FROM table_1" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                    <param name="col3" value="null" />
+                </param>
+                <param name="row">
+                    <param name="COL1" value="ROW 2 COLUMN 1" />
+                    <param name="COL2" value="ROW 2 COLUMN 2" />
+                    <param name="col3" value="null" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementWithWildcard">
+        <param name="sqlSnippet" value="SELECT * FROM table_1" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                    <param name="col3" value="null" />
+                </param>
+                <param name="row">
+                    <param name="COL1" value="ROW 2 COLUMN 1" />
+                    <param name="COL2" value="ROW 2 COLUMN 2" />
+                    <param name="col3" value="null" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementWithParams">
+        <param name="sqlSnippet" value="SELECT col1, col2 FROM param_table" />
+        <test>
+            <request>
+                <param name="1" value="foo" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementWithNullParam">
+        <param name="sqlSnippet" value="SELECT col1, col2 FROM param_table" />
+        <test>
+            <request>
+                <param name="1" value="null" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementWithAliases">
+        <param name="sqlSnippet" value="SELECT col1 AS COLUMN_1, col2 AS COLUMN_2 FROM table_1" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementWithTablePrefix">
+        <param name="sqlSnippet" value="SELECT a.col1, a.col2 FROM table_1 a" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                </param>
+                <param name="row">
+                    <param name="COL1" value="ROW 2 COLUMN 1" />
+                    <param name="COL2" value="ROW 2 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBasicStatementOrder">
+        <param name="sqlSnippet" value="SELECT col1, col2 FROM out_of_order_table" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testHibernateLikeQueryUsingTableAlias">
+        <param name="sqlSnippet" value="FROM hib_table t_1" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="t_1.col1" value="ROW 1 COLUMN 1" />
+                    <param name="t_1.col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testHibernateLikeQueryUsingRealTableNames">
+        <param name="sqlSnippet" value="FROM hib_table_1 t_1, hib_table_2 t_2" />
+        <test>
+            <request>
+                <param name="1" value="foo" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="hib_table_1.col1" value="ROW 1 COLUMN 1" />
+                    <param name="hib_table_2.col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testAmbiguousColumnNames">
+        <param name="sqlSnippet" value="SELECT a.col1, b.col1 AS COLUMN_2 FROM table_1 a, table_2 b" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="COLUMN_2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testUnambiguousColumnNamesWithAliases">
+        <param name="sqlSnippet" value="SELECT a.col1 AS COLUMN_1, a.col2 AS COLUMN_2 FROM table_1 a" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testComplexWildcardStatement">
+        <param name="sqlSnippet" value="SELECT a.*, non_wildcard, b.other_non_wildcard FROM table_1 a, table_2 b" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="table_1.column_1" value="ROW 1 COLUMN 1" />
+                    <param name="table_1.column_2" value="ROW 1 COLUMN 2" />
+                    <param name="table_2.non_wildcard" value="ROW 1 NON WILDCARD" />
+                    <param name="b.other_non_wildcard" value="ROW 1 OTHER NON WILDCARD" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testBadConfig">
+        <param name="sqlSnippet" value="FROM bad_config" />
+        <test>
+            <!-- SELECT a.col1, a.col2, b.col2 as b_col2 FROM bad_config a, table_2 b WHERE col1 = ? -->
+            <request>
+                <param name="1" value="ambiguous_columns" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="col1" value="ROW 1 COLUMN 1" />
+                    <param name="col2" value="ROW 1 COLUMN 2" />
+                    <param name="col2" value="ROW 1 COLUMN 3" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <!-- SELECT a_.col1, a_.col2, b_.col2 as b_col2 FROM bad_config a_, table_2 b_ WHERE col1 = ? -->
+            <request>
+                <param name="1" value="foo" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="a.col1" value="ROW 1 COLUMN 1" />
+                    <param name="a.col2" value="ROW 1 COLUMN 2" />
+                    <param name="b_.col2" value="ROW 1 COLUMN 3" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="testException">
+        <param name="sqlSnippet" value="FROM exception" />
+        <test>
+            <request />
+            <response>
+                <param name="exception" value="Throwing exception" />
+            </response>
+        </test>
+    </category>
+    <category name="Test Case Statement">
+        <param name="sqlSnippet" value="CASE" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="case_statement_1" value="1" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Test Crazy IN Clause">
+        <param name="sqlSnippet" value="crazy_in_clause_table" />
+        <template name="response">
+            <param name="row">
+                <param name="column" value="value" />
+            </param>
+        </template>
+        <test>
+            <request>
+                <param name="1" value="no_paren" />
+            </request>
+            <response>
+                <use-template name="response" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="1" value="in1" />
+                <param name="2" value="in2" />
+                <param name="3" value="in3" />
+            </request>
+            <response>
+                <use-template name="response" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="1" value="in1_1" />
+                <param name="2" value="in1_2" />
+                <param name="3" value="in2_1" />
+                <param name="4" value="in2_2" />
+            </request>
+            <response>
+                <use-template name="response" />
+            </response>
+        </test>
+    </category>
+    <category name="Test Subselects">
+        <param name="sqlSnippet" value="select oneg_hotel_id,lead_pricing_id,? *(min \(low_rate\) over \(partition by oneg_hotel_id\) min_oneg_hotel_id)? *from oneg_hotel.lead_pricing a" />
+        <test>
+            <request>
+                <param name="1" value="1001" />
+                <param name="2" value="1002" />
+                <param name="3" value="1003" />
+                <param name="4" value="1004" />
+                <param name="5" value="1005" />
+                <param name="6" value="1" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="lead_pricing_id" value="1" />
+                    <param name="oneg_hotel_id" value="1" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Union Select">
+        <param name="sqlSnippet" value="union" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="omh_promotion_id" value="1" />
+                    <param name="omh_rate_type" value="RT" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Multiple Aliases">
+        <param name="sqlSnippet" value="SELECT a AS alias_1, a AS alias_2 FROM multi_alias" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="a" value="aliased value" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="ISO 99 Join">
+        <param name="sqlSnippet" value="left outer join" />
+        <test>
+            <request>
+                <param name="1" value="join" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="a.a_id" value="join" />
+                    <param name="a.description" value="description" />
+                    <param name="b_table.description" />
+                    <param name="c.description" value="c description" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Old Style Join">
+        <param name="sqlSnippet" value="old_style_outer_join" />
+        <test>
+            <request>
+                <param name="1" value="old style join" />
+            </request>
+            <response>
+                <param name="row">
+                    <param name="a.a_id" value="old style join" />
+                    <param name="a.old_style_outer_join" value="foo foo" />
+                    <param name="b.description" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Data Types">
+        <param name="sqlSnippet" value="DATA_TYPES" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="intgr" value="42" />
+                    <param name="vrchr" value="What is the question?" />
+                    <param name="dt" value="2007-02-26" />
+                    <param name="tmstamp">
+                        <param name="plusDays" value="0"/>
+                        <param name="format" value="yyyy-MM-dd HH:mm:ss.s"/>
+                    </param>
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Auto generated values">
+        <param name="sqlSnippet" value="insert into autogenerated" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="test_table_id.nextval" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="Auto generated values">
+        <param name="sqlSnippet" value="insert into oracle_autogenerated" />
+        <test>
+            <request />
+            <response>
+                <param name="row">
+                    <param name="id_col_seq.nextval" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="keyConstraintViolationInsert">
+        <param name="sqlSnippet" value="insert into key_constraint"/>
+        <test>
+            <request>
+                <param name="KEY" value="already existing key"/>
+            </request>
+            <response>
+                <param name="exception" value="Key constraint violation" />
+            </response>
+        </test>
+    </category>
+    <category name="anotherStupidHibernateQuery">
+        <param name="sqlSnippet" value="and ?=this_.ref_point_of_sale_id" />
+        <test>
+            <request>
+                <param name="1" value="foo" />
+                <param name="2" value="123-456-7890"/>
+                <param name="3" value="27"/>
+            </request>
+            <response>
+                <param name="row">
+                    <param name="customer_member.customer_member_id" value="1" />
+                    <param name="customer_member.anonymous_cookie_value" value="Anon" />
+                    <param name="customer_traveler_profile.customer_traveler_profile_id" value="13" />
+                    <param name="customer_loyalty_card_profile.customer_traveler_profile_id" value="13" />
+                    <param name="customer_traveler_preference.customer_traveler_profile_id" value="13" />
+                </param>
+            </response>
+        </test>
+    </category>
+    <category name="data types">
+        <param name="sqlSnippet" value="from data_type"/>
+        <test>
+            <request>
+                <param name="1" value="data types"/>
+            </request>
+            <response>
+                <param name="row">
+                    <param name="short_value" type="SHORT" value="1"/>
+                    <param name="integer_value" type="INTEGER" value="1"/>
+                    <param name="long_value" type="LONG" value="1"/>
+                    <param name="double_value" type="DOUBLE" value="1.1"/>
+                    <param name="float_value" type="FLOAT" value="1.2"/>
+                    <param name="big_decimal_value" type="BIG_DECIMAL" value="1.3"/>
+                    <param name="boolean_value" type="BOOLEAN" value="true"/>
+                    <param name="false_value" type="BOOLEAN" value="yes"/>
+                    <param name="date_value" type="DATE" value="1971-03-10"/>
+                    <param name="time_value" type="TIME" value="23:59:59"/>
+                    <param name="timestamp_value" type="TIMESTAMP" value="2011-11-11 00:00:00.0001"/>
+                    <param name="url_value" type="URL" value="http://www.orbitz.com"/>
+                    <param name="blob_value" type="BLOB" value="This is a blob"/>
+                    <param name="clob_value" type="CLOB" value="This is a clob"/>
+                    <param name="array_value" type="ARRAY" value="ArrayEntry"/>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

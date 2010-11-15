@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <template name="exclusion_rule">
+        <param name="excl_rule_id" value="" />
+        <param name="rule_name" value="Rule" />
+        <param name="description" value="Description" />
+        <param name="is_active_ind" value="1" />
+        <param name="priority" value="1" />
+        <param name="rule_data" value="" />
+        <param name="username" value="user" />
+        <param name="update_reason" value="update reason" />
+    </template>
+    <template name="excl_data">
+        <param name="hotel:condition" />
+    </template>
+    <template name="trial1_data">
+        <param name="trial1" value="hotel:trial1" />
+    </template>
+    <template name="trial2_data">
+        <param name="trial2" value="hotel:trial2" />
+    </template>
+    <template name="excl_consequence">
+        <param name="hotel:consequence">
+            <param name="hotel:exclude-rate-host">
+                <param name="attributes">
+                    <param name="name" value="hotelRateHost" />
+                </param>
+            </param>
+        </param>
+    </template>
+    <template name="excl_rate_host">
+        <param name="hotel:hotel-rate-host">
+            <param name="attributes">
+                <param name="name" value="hotelRateHost" />
+            </param>
+            <param name="hotel:host" />
+        </param>
+    </template>
+    <category name="Exclusion Rule Category">
+        <param name="sqlSnippet" value="from excl_rule this_ where this_.is_active_ind=?" />
+        <test>
+            <request>
+                <param name="1" value="true" />
+            </request>
+            <response>
+                <param name="row">
+                    <use-template name="exclusion_rule">
+                        <param name="excl_rule_id" value="" />
+                        <param name="description" value="Dust GTA" />
+                        <param name="rule_data">
+                            <use-template name="excl_data">
+                                <param name="hotel:condition">
+                                    <use-template name="excl_rate_host">
+                                        <param name="hotel:host">
+                                            <param name="hotel:equals" value="GTA" />
+                                        </param>
+                                    </use-template>
+                                </param>
+                            </use-template>
+                            <use-template name="trial1_data">
+                                <param name="trial1" value="hotel:trial3" />
+                            </use-template>
+                            <use-template name="trial2_data">
+                                <param name="trial2" value="hotel:trial4" />
+                            </use-template>
+                        </param>
+                    </use-template>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.orbitz.com/schema/mock-data MockTestData.xsd ">
+  <parameterMatcher id="insertedDataMatcherMorpher" class="org.mdf.mockdata.InsertedDataParameterMatcherMorpher"/>
+  <parameterMorpher ref="insertedDataMatcherMorpher"/>
+  <category>
+    <test>
+      <request>
+        <param name="1" value="table TABLE_1 column COLUMN_1"/>
+      </request>
+      <response>
+        <param name="table TABLE_1 column COLUMN_1" value="TABLE_1.COLUMN_1"/>
+        <param name="table TABLE_1 column COLUMN_2" value="aliased_name"/>
+      </response>
+    </test>
+    <test>
+    	<request>
+    		<param name="1" value="inserted into table TABLE_2 column COLUMN_2 value FOO" />
+    	</request>
+    	<response>
+    		<param name="New"/>
+    	</response>
+    </test>
+    <test>
+    	<request>
+    		<param name="1" value="HOUSE"/>
+    	</request>
+    	<response>
+    		<param name="Resp"/>
+    	</response>
+    </test>
+    
+  </category>
+</mock-data>

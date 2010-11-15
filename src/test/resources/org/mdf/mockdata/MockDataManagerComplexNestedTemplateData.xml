@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.orbitz.com/schema/mock-data http://st.duncllc.com/service-testing/mock-data-framework/MockTestData-3.0.xsd ">
+    <template name="longArray">
+        <param name="long" value="1" />
+        <param name="long" value="2" />
+        <param name="long" value="3" />
+    </template>
+    <template name="booleanList">
+        <param name="XStream Attribute: class" value="linked-list" />
+        <param name="boolean" value="true" />
+        <param name="boolean" value="false" />
+    </template>
+    <template name="object_base_template">
+        <param name="stringField" value="stringField" />
+        <param name="mapField">
+            <param name="entry">
+                <param name="string" value="key1" />
+                <param name="org.mdf.mockdata.ComplexClass2">
+                    <param name="__stringField" value="value1" />
+                </param>
+            </param>
+        </param>
+        <param name="longArray">
+            <use-template name="longArray" />
+        </param>
+        <param name="booleanList">
+            <use-template name="booleanList" />
+        </param>
+    </template>
+    <template name="child_template">
+        <use-template name="object_base_template">
+            <param name="stringField" value="childStringField" />
+        </use-template>
+    </template>
+    <template name="object_template">
+        <use-template name="object_base_template" />
+        <param name="child">
+            <use-template name="child_template" />
+        </param>
+        <param name="sameChild">
+            <use-template name="child_template" />
+        </param>
+        <param name="Implementation Type" value="org.mdf.mockdata.ComplexClass" />
+    </template>
+    <category name="ojf">
+        <test>
+            <request>
+                <param name="p" value="test_1" />
+            </request>
+            <response>
+                <param name="objectParam">
+                    <use-template name="object_template" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="p" value="test_2" />
+            </request>
+            <response>
+                <param name="objectParam">
+                    <use-template name="object_template">
+                        <param name="child.booleanList.boolean[1]" value="false" />
+                    </use-template>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

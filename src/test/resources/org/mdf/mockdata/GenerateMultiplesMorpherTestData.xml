@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data MockTestData.xsd ">
+    <parameterMorpher class="org.mdf.mockdata.GenerateMultiplesMorpher"/>
+    <category>
+        <test>
+            <request>
+                <param name="testName" value="happyPath" />
+            </request>
+            <response>
+                <param name="multiple" value="4">
+                    <param name="data" value="foo" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="nullChildParams" />
+            </request>
+            <response>
+                <param name="multiple" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="noNumberParam" />
+            </request>
+            <response>
+                <param name="multiple">
+                    <param name="data" value="foo" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="noDataParam" />
+            </request>
+            <response>
+                <param name="multiple" value="4" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="dataParamHasSameNameAsMultipleParam" />
+            </request>
+            <response>
+                <param name="multiple" value="4">
+                    <!--
+                            the "multiple" param will be thrown out because it has no child params
+                        -->
+                    <param name="multiple" value="2"/>
+                    <param name="data" value="foo" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="stringForMultiplesParamValue" />
+            </request>
+            <response>
+                <param name="multiple" value="foo">
+                    <param name="data" value="foo" />
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="testName" value="floatForMultiplesParamValue" />
+            </request>
+            <response>
+                <param name="multiple" value="7.2">
+                    <param name="data" value="foo" />
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

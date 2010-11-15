@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <description>
+    This is a test configuration file for the MockDataManager class.
+  </description>
+    <category>
+        <template name="search_template">
+            <param name="id" value="1" />
+            <param name="code" value="TC" />
+            <param name="name" value="Orbitz Hotel" />
+            <param name="latitude" value="41.8819" />
+            <param name="longitude" value="-87.6397" />
+            <param name="postalcode" value="60061" />
+            <param name="city" value="Chicago" />
+            <param name="address1" value="500 W Madison ST" />
+            <param name="address2" value="" />
+            <param name="state" value="IL" />
+            <param name="country" value="US" />
+            <param name="pos" value="ORB" />
+        </template>
+        <template name="find_template">
+            <param name="id" value="2" />
+            <param name="code" value="CM" />
+            <param name="name" value="Hotel" />
+            <param name="latitude" value="45.8819" />
+            <param name="longitude" value="-83.6397" />
+            <param name="postalcode" value="60890" />
+            <param name="city" value="Madison" />
+            <param name="address1" value="100 Montgomery Avenue" />
+            <param name="address2" value="" />
+            <param name="state" value="WI" />
+            <param name="pos" value="ORB" />
+        </template>
+        <template name="city_template">
+            <param name="name" value="Moline" />
+            <param name="state" value="IL" />
+        </template>
+        <template name="state_template">
+            <param name="abbreviation" value="IL" />
+            <param name="country" value="US" />
+        </template>
+        <template name="generic_template">
+            <param name="exist" value="" />
+        </template>
+        <test>
+            <request>
+                <param name="param1" value="value" />
+            </request>
+            <response>
+                <param name="response">
+                    <use-template name="search_template">
+                        <param name="name" value="E-Bookers Hotel" />
+                    </use-template>
+                    <use-template name="find_template">
+                        <param name="name" value="Orbitz Hotel" />
+                    </use-template>
+                    <use-template name="search_template">
+                        <param name="id" value="8" />
+                    </use-template>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param2" value="value 2">
+                    <use-template name="search_template">
+                        <param name="id" value="5" />
+                    </use-template>
+                    <use-template name="find_template">
+                        <param name="id" value="10" />
+                        <param name="city" value="Milwaukee" />
+                    </use-template>
+                </param>
+            </request>
+            <response>
+                <param name="response 2" value="value 2" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param3" value="value 3">
+                    <use-template name="search_template">
+                        <param name="id" value="5" />
+                    </use-template>
+                    <use-template name="find_template">
+                        <param name="id" value="10" />
+                        <param name="city" value="Milwaukee">
+                            <use-template name="city_template">
+                                <param name="name" value="Munster" />
+                            </use-template>
+                            <use-template name="generic_template" />
+                        </param>
+                    </use-template>
+                    <use-template name="generic_template" />
+                </param>
+            </request>
+            <response>
+                <param name="response 2" value="value 2" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="param4" value="value 4">
+                    <use-template name="search_template">
+                        <param name="id" value="5" />
+                    </use-template>
+                    <use-template name="find_template">
+                        <param name="id" value="10" />
+                        <param name="city" value="Milwaukee">
+                            <use-template name="city_template">
+                                <param name="name" value="Munster" />
+                            </use-template>
+                            <use-template name="generic_template" />
+                            <use-template name="state_template">
+                                <param name="country" value="USA">
+                                    <use-template name="generic_template" />
+                                </param>
+                            </use-template>
+                        </param>
+                    </use-template>
+                    <use-template name="generic_template" />
+                </param>
+            </request>
+            <response>
+                <param name="response 3" value="value 3" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="request 4" value="value 4" />
+            </request>
+            <response>
+                <param name="param4" value="value 4">
+                    <use-template name="search_template">
+                        <param name="id" value="5" />
+                    </use-template>
+                    <use-template name="find_template">
+                        <param name="id" value="10" />
+                        <param name="city" value="Milwaukee">
+                            <use-template name="city_template">
+                                <param name="name" value="Munster" />
+                            </use-template>
+                            <use-template name="generic_template" />
+                            <use-template name="state_template">
+                                <param name="country" value="USA">
+                                    <use-template name="search_template">
+                                        <param name="pos" value="EBUK">
+                                            <use-template name="find_template">
+                                                <param name="state" value="OK" />
+                                                <param name="address1" value="100 Adams Street" />
+                                                <param name="address2" value="Suite 18000" />
+                                                <param name="id" value="7" />
+                                            </use-template>
+                                        </param>
+                                        <param name="name" value="EBUK Hotel">
+                                            <use-template name="state_template">
+                                                <param name="country" value="UK" />
+                                            </use-template>
+                                        </param>
+                                        <param name="country" value="Ireland">
+                                            <use-template name="state_template">
+                                                <param name="country" value="UK" />
+                                                <param name="country" value="IR" />
+                                            </use-template>
+                                        </param>
+                                        <param name="code" value="TR">
+                                            <use-template name="find_template">
+                                                <param name="state" value="AL" />
+                                            </use-template>
+                                        </param>
+                                        <param name="code" value="TD">
+                                            <use-template name="find_template">
+                                                <param name="state" value="ND" />
+                                            </use-template>
+                                        </param>
+                                    </use-template>
+                                    <use-template name="find_template">
+                                        <param name="id" value="10" />
+                                        <param name="city" value="Milwaukee">
+                                            <use-template name="city_template">
+                                                <param name="name" value="Gary" />
+                                            </use-template>
+                                            <use-template name="generic_template" />
+                                            <use-template name="state_template">
+                                                <param name="country" value="USA">
+                                                    <use-template name="generic_template" />
+                                                </param>
+                                            </use-template>
+                                        </param>
+                                    </use-template>
+                                </param>
+                            </use-template>
+                        </param>
+                    </use-template>
+                    <use-template name="generic_template" />
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

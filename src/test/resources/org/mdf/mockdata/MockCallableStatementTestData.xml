@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <parameterMorpher class="org.mdf.mockdata.SequenceGeneratingMatcherMorpher">
+        <param name="SEQUENCE_NAME_PARAM" value="SEQUENCE_NAME"/>
+    </parameterMorpher>
+    <category name="basicOutParameterStatement">
+        <param name="sqlSnippet" value="call insert into dps.package_remark" />
+        <test>
+            <request/>
+            <response>
+                <param name="SEQUENCE_NAME_PARAM" value="5"/>
+            </response>
+        </test>
+    </category>
+</mock-data>

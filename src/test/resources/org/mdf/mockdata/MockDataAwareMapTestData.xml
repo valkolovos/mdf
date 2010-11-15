@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <category name="map">
+        <test>
+            <request>
+                <param name="key" value="foo"/>
+            </request>
+            <response>
+                <param name="value" value="house">
+                    <param name="Implementation Type" value="java.lang.String"/>
+                </param>
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="key">
+                    <param name="__stringField" value="krakatoa"/>
+                    <param name="Implementation Type" value="org.mdf.mockdata.ComplexClass2"/>
+                </param>
+            </request>
+            <response>
+                <param name="value">
+                    <param name="stringField" value="stringField"/>
+                    <param name="mapField">
+                        <param name="entry">
+                            <param name="string" value="key1"/>
+                            <param name="org.mdf.mockdata.ComplexClass2">
+                                <param name="__stringField" value="value1"/>
+                            </param>
+                        </param>
+                    </param>
+                    <param name="longArray">
+                        <param name="long" value="1"/>
+                        <param name="long" value="2"/>
+                        <param name="long" value="3"/>
+                    </param>
+                    <param name="child">
+                        <param name="stringField" value="childStringField"/>
+                        <param name="mapField">
+                            <param name="entry">
+                                <param name="string" value="key1"/>
+                                <param name="org.mdf.mockdata.ComplexClass2">
+                                    <param name="__stringField" value="value1"/>
+                                </param>
+                            </param>
+                        </param>
+                        <param name="longArray">
+                            <param name="long" value="1"/>
+                            <param name="long" value="2"/>
+                            <param name="long" value="3"/>
+                        </param>
+                        <param name="booleanList">
+                            <param name="XStream Attribute: class" value="linked-list"/>
+                            <param name="boolean" value="true"/>
+                            <param name="boolean" value="false"/>
+                        </param>
+                    </param>
+                    <param name="booleanList">
+                        <param name="XStream Attribute: class" value="linked-list"/>
+                        <param name="boolean" value="true"/>
+                        <param name="boolean" value="false"/>
+                    </param>
+                    <param name="sameChild">
+                        <param name="stringField" value="childStringField"/>
+                        <param name="mapField">
+                            <param name="entry">
+                                <param name="string" value="key1"/>
+                                <param name="org.mdf.mockdata.ComplexClass2">
+                                    <param name="__stringField" value="value1"/>
+                                </param>
+                            </param>
+                        </param>
+                        <param name="longArray">
+                            <param name="long" value="1"/>
+                            <param name="long" value="2"/>
+                            <param name="long" value="3"/>
+                        </param>
+                        <param name="booleanList">
+                            <param name="XStream Attribute: class" value="linked-list"/>
+                            <param name="boolean" value="true"/>
+                            <param name="boolean" value="false"/>
+                        </param>
+                    </param>
+                    <param name="Implementation Type" value="org.mdf.mockdata.ComplexClass"/>
+                </param>
+            </response>
+        </test>
+		<test>
+            <request>
+                <param name="key">
+                    <param name="long" value="1"/>
+                    <param name="long" value="2"/>
+                    <param name="Implementation Type" value="java.lang.Long-array"/>
+                </param>
+            </request>
+            <response>
+                <param name="value">
+                    <param name="long" value="3"/>
+                    <param name="long" value="4"/>
+                    <param name="Implementation Type" value="java.lang.Long-array"/>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>
