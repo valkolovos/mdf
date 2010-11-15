@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mock-data xmlns="http://www.orbitz.com/schema/mock-data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.orbitz.com/schema/mock-data ../../../../../main/MockTestData.xsd ">
+    <parameterMatcher id="xmlMatcherMorpher" class="org.mdf.xml.XmlParameterMatcherMorpher"/>
+    <parameterMorpher ref="xmlMatcherMorpher"/>
+    <category>
+        <test>
+            <request>
+                <param name="//EngineDoc/ContentType" value="OrderFormDoc" />
+                <param name="//EngineDoc/OrderFormDoc/Consumer/PaymentMech/CreditCard/Number" value="5200000000000007" />
+            </request>
+            <response>
+                <param name="response" />
+            </response>
+        </test>
+        <test>
+            <request>
+                <param name="/test" value="true" />
+            </request>
+            <response>
+                <param name="xml-response">
+                    <param name="DocVersion" value="1.0" />
+                    <param name="EngineDoc">
+                        <param name="ContentType" value="OrderFormDoc" />
+                        <param name="IPAddress" value="127.0.0.1" />
+                        <param name="OrderFormDoc">
+                            <param name="Mode" value="P" />
+                            <param name="Transaction">
+                                <param name="AuthCode" value="AuthCode" />
+                                <param name="CardProcResp">
+                                    <param name="AvsDisplay" value="YY" />
+                                    <param name="AvsRespCode" value="YY" />
+                                    <param name="CcErrCode" value="1">
+                                        <param name="xml attributes">
+                                            <param name="DataType" value="S32" />
+                                        </param>
+                                    </param>
+                                    <param name="CcReturnMsg" value="Approved" />
+                                    <param name="Cvv2Resp" value="1" />
+                                    <param name="ProcReturnCode" value="1" />
+                                    <param name="ProcReturnMsg" value="Message" />
+                                    <param name="Status" value="Success" />
+                                </param>
+                                <param name="CurrentTotals">
+                                    <param name="Totals">
+                                        <param name="Total" value="00">
+                                            <param name="xml attributes">
+                                                <param name="DataType" value="Money" />
+                                                <param name="Currency" value="840" />
+                                            </param>
+                                        </param>
+                                    </param>
+                                </param>
+                                <param name="Id" value="TxId123" />
+                                <param name="Type" value="PreAuth" />
+                            </param>
+                        </param>
+                    </param>
+                </param>
+            </response>
+        </test>
+    </category>
+</mock-data>

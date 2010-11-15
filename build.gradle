@@ -23,15 +23,12 @@ repositories {
     }
 }
 
-tasks['javadoc'].exclude '**/com/google/**/*', '**/generated/**/*'
-
 configurations {
     castor
     hibernateTests
 }
 
 dependencies {
-    //compile 'apache.ahc:ahc:2.0-orbitz-20100217'
     compile 'org.acegisecurity:acegi-security:1.0.1'
     compile 'org.springframework:spring:2.5.6'
     compile 'apache.commons:commons-httpclient:3.0.1'
@@ -81,7 +78,9 @@ sourceSets {
     }
 }
 
-tasks['compileJava'].dependsOn 'castor'
+cobertura {
+    coverageExcludes = [ '.*org\\.mdf\\.mockdata\\.generated\\..*' ]
+}
 
 project.tasks['test'].configure {
     includes = [ '**/*Test.class' ]
@@ -89,8 +88,8 @@ project.tasks['test'].configure {
     useTestNG()
 }
 
-project.tasks['jar'].exclude 'com/google/**/*'
-
+tasks['compileJava'].dependsOn 'castor'
+tasks['javadoc'].exclude '**/generated/**/*'
 tasks['eclipseClasspath'].plusConfigurations << configurations['hibernateTests']
 tasks['compileHibernateTestsJava'].dependsOn 'testClasses'
 
